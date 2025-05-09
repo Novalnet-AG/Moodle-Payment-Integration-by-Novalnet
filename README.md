@@ -1,11 +1,9 @@
-# NOVALNET PAYMENT PLUGIN FOR Moodle
-Accept 100+ payment methods in 125+ currencies globally in a highly secure, state-of-the-art environment supported by AI-powered risk management for SMEs & large enterprises. NOVALNET hosts multiple value-added features & services including recurring payments, debt collection, automated marketplace.
+# MOODLE PAYMENT INTEGRATION BY NOVALNET
 
-NOVALNET payment plugin is available for the Moodle versions 4.5.0 - 5.+ in the following languages: <b>EN, DE</b>
+The Moodle Payment Gateway by Novalnet enables secure integration of payments and payment services for all Moodle shops through a full-service platform that allows merchants to automate payment processing, enrich customer experiences, and improve conversion rates via a single interface and contract partner. It supports over 100 payment methods in more than 125 currencies globally, offering a highly secure, state-of-the-art environment backed by AI-powered risk management tailored for SMEs and large enterprises. Additionally, Novalnet provides multiple value-added features and services, including recurring payments, debt collection, and automated marketplace solutions.
 
-Support is available in: <b> EN, DE </b>
-
-Through individuality and flexibility, you can choose which payment methods and services you need. Get now a seamless integration with the various types of payments and payment-related services integrated in one unique platform.
+## Integration requirements for Moodle
+Novalnet <a href="https://www.novalnet.de/"> merchant account </a> is required for processing all international and local payments through this Moodle Payment Gateway. The module is available for the Moodle versions 4.5.0 - 5.+ in the following languages: EN & DE
 
 ## Important functions for Moodle
 
@@ -92,9 +90,8 @@ Moodle payment plugin is compatible with the below technical capabilities.
 Find more about Shopware 5 plugin on: https://www.novalnet.com/docs/plugins/installation-guides/moodle-installation-guide.pdf<br>
 To test our demo shop, please visit: https://moodle.novalnet.de
 
-
 ## Quick Installation via plugin upload
-Follow the below steps to install the payment plugin for Shopware 5 in the shop system.
+Follow the below steps to install the payment plugin for Moodle in the shop system.
 
 1. **Download** the plugin from <a href="https://moodle.org/plugins"> here</a> or <a href="https://www.novalnet.com/contact/"> contact us</a>.
 
@@ -107,7 +104,12 @@ Follow the below steps to install the payment plugin for Shopware 5 in the shop 
 
 4. Click **Install plugin from zip** to install the Novalnet Moodle payment plugin
 
-## Contact
+## License  
+See our License Agreement at: https://www.novalnet.com/payment-plugins-free-license/
+
+## Documentation & Support
+For more information about the Moodle Payment Integration by Novalnet, please get in touch with us: <a href="mailto:sales@novalnet.de"> sales@novalnet.de </a> or +49 89 9230683-20<br>
+
 Novalnet AG<br>
 Zahlungsinstitut (ZAG)<br>
 Gutenbergstraße 7<br>
@@ -117,8 +119,7 @@ E-mail: sales@novalnet.de<br>
 Tel: +49 89 9230683-20<br>
 Web: www.novalnet.de
 
-## License
-See our License Agreement at: https://www.novalnet.com/payment-plugins-free-license/
-
-## About Novalnet
-Novalnet is a leading financial services institution offering online gateways for processing of online payments. Operating in the market as a full payment service provider, Novalnet AG was founded in Ismaning near Munich, and provides online merchants user-friendly payment modules for all major shop systems as well as for self-programmed websites. The product and service portfolio is very comprehensive and includes all commonly used payment methods of online payment. These include a variety of intelligent fraud prevention modules, free technical support, an automated accounts receivable management system, a comprehensive subscription and membership management, as well as a very useful affiliate program. The experienced and international team of specialists at Novalnet is committed to support online merchants with in-depth knowledge and to work together with them hand in hand to increase their revenue and the quality of their online payments.
+## Who is Novalnet AG?
+<p>Novalnet AG is a <a href="https://www.novalnet.de/zahlungsinstitut"> leading financial service institution </a> offering payment gateways for processing online payments. Operating in the market as a full payment service provider Novalnet AG provides online merchants user-friendly payment integration with all major shop systems and self-programmed sites.</p> 
+<p>Accept, manage and monitor payments all on one platform with one single contract!</p>
+<p>Our SaaS engine is <a href="https://www.novalnet.de/pci-dss-zertifizierung"> PCI DSS </a> certified and designed to enable real-time risk management, secured payments via escrow accounts, efficient receivables management, dynamic member and subscription management, customized payment solutions for various business models (e.g. marketplaces, affiliate programs etc.) etc.</p>
