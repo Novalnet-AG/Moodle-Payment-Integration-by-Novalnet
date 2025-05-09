@@ -85,6 +85,7 @@ Moodle payment plugin is compatible with the below technical capabilities.
 - WeChat Pay
 - Trustly
 - Blik
+- TWINT
 
 ## More information
 Find more about Shopware 5 plugin on: https://www.novalnet.com/docs/plugins/installation-guides/moodle-installation-guide.pdf<br>
