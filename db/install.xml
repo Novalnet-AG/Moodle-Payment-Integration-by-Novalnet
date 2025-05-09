@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="payment/gateway/novalnet/db" VERSION="20201216" COMMENT="XMLDB file for Novalnet payment gateway plugin"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="paygw_novalnet_transaction_detail" COMMENT="Stores Novalnet Transaction History.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <!-- User Information -->
+        <FIELD NAME="userid" TYPE="int" LENGTH="15" NOTNULL="false" SEQUENCE="false" COMMENT="customer ID"/>
+        <FIELD NAME="userunenroled" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" COMMENT="Unenrolled User From Course" SEQUENCE="false"/>
+        <!-- Order and Course Details -->
+        <FIELD NAME="orderid" TYPE="char" LENGTH="64" NOTNULL="false" COMMENT="ID for the order in shop" SEQUENCE="false"/>
+        <FIELD NAME="component" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="paymentarea" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="itemid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Transaction Information -->
+        <FIELD NAME="tid" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Novalnet Transaction ID"/>
+        <FIELD NAME="amount" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Transaction amount in minimum unit of currency"/>
+        <FIELD NAME="paidamount" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Transaction paid amount in minimum unit of currency"/>
+        <FIELD NAME="refundedamount" TYPE="int" LENGTH="20" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Transaction refunded amount in minimum unit of currency"/>
+        <FIELD NAME="currency" TYPE="char" LENGTH="5" NOTNULL="false" COMMENT="Transaction currency in ISO-4217" SEQUENCE="false"/>
+        <!-- Payment Information -->
+        <FIELD NAME="paymenttype" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="Payment id of the gateway"/>
+        <FIELD NAME="gatewaystatus" TYPE="char" LENGTH="64" NOTNULL="false" COMMENT="Payment status" SEQUENCE="false"/>
+        <!-- Additional Information -->
+        <FIELD NAME="transactioninfo" TYPE="text" LENGTH="medium" NOTNULL="false" COMMENT="Payment comments" SEQUENCE="false"/>
+        <FIELD NAME="additionalinfo" TYPE="text" LENGTH="medium" NOTNULL="false" COMMENT="Additional information used in gateways" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Transaction Date"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+          <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+          <INDEX NAME="idx-tid" UNIQUE="false" FIELDS="tid"/>
+          <INDEX NAME="idx-paymenttype" UNIQUE="false" FIELDS="paymenttype"/>
+          <INDEX NAME="idx-orderid" UNIQUE="false" FIELDS="orderid"/>
+          <INDEX NAME="idx-component" UNIQUE="false" FIELDS="component"/>
+          <INDEX NAME="idx-paymentarea" UNIQUE="false" FIELDS="paymentarea"/>
+          <INDEX NAME="idx-gatewaystatus" UNIQUE="false" FIELDS="gatewaystatus"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

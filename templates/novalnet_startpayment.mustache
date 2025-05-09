@@ -1,0 +1,10 @@
+<div style="text-align: center;">
+    <button class="btn btn-primary"
+        {{#disabled}}disabled{{/disabled}}
+        data-action="novalnet-startpayment"
+        data-component="{{component}}"
+        data-paymentarea="{{paymentarea}}"
+        data-description="{{{description}}}"
+        data-itemid="{{itemid}}"
+    >{{#str}}startpayment, paygw_novalnet{{/str}}</button>
+</div>
