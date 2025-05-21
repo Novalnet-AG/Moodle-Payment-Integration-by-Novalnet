@@ -29,13 +29,13 @@
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
  * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
+  * @copyright  2025 Novalnet <technic@novalnet.de>
  * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025050600;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2025052100;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022112809;        // Requires this Moodle version. 4.1.
 $plugin->component = 'paygw_novalnet';       // Full name of the plugin (used for diagnostics).
 $plugin->maturity = MATURITY_STABLE;
