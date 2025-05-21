@@ -28,9 +28,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 use core_payment\helper;
@@ -45,12 +45,15 @@ $urlparams = [
     'itemid' => required_param('itemid', PARAM_INT),
     'description' => required_param('description', PARAM_INT),
     'userid' => required_param('userid', PARAM_INT),
+    'status' => optional_param('status', null, PARAM_TEXT),
+    'tid' => optional_param('tid', null, PARAM_TEXT),
+    'status_text' => optional_param('status_text', null, PARAM_TEXT),
 ];
 
 $notifyerror = notification::NOTIFY_ERROR;
 // Check for failure status and missing tid, then redirect.
-if ($_REQUEST['status'] == 'FAILURE' && empty($_REQUEST['tid'])) {
-    redirect(new moodle_url('/payment/gateway/novalnet/pay.php', $urlparams), $_REQUEST['status_text'], 0, $notifyerror);
+if ($urlparams['status'] == 'FAILURE' && empty($urlparams['tid'])) {
+    redirect(new moodle_url('/payment/gateway/novalnet/pay.php', $urlparams), $urlparams['status_text'], 0, $notifyerror);
     return;
 }
 

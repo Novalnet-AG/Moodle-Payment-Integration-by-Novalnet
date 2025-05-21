@@ -30,9 +30,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
  */
 
@@ -60,9 +60,9 @@ require_once($CFG->dirroot . '/course/lib.php');
  *
  * @package     paygw_novalnet
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class create_payment extends external_api {
 
@@ -70,11 +70,12 @@ class create_payment extends external_api {
      * This method handles tasks such as updating the payment status, logging transaction details,
      * and triggering any necessary follow-up actions before a successful transaction.
      *
-     * @param string $component The name of the component (e.g., plugin, module) that the itemid belongs to.
+     * @param string $component The name of the component.
      * @param string $paymentarea The specific area or scope of the payment within the component.
      * @param int $itemid The internal identifier used by the component to reference the item.
      * @param string $description A description or note related to the transaction.
-     * @param string $paymentmethodid The ID of the payment method used for the transaction.
+     * @param string|null $paymentmethodid (Optional) The ID of the payment method
+     * used for the transaction, or null if not specified.
      *
      * @return array A result array containing the status of the transaction and any additional data.
      */

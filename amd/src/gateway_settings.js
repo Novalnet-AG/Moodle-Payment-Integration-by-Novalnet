@@ -14,18 +14,20 @@ define(
         'jquery',
         'core/ajax',
         'core/notification',
-        'core/str'
+        'core/str',
+        'core/log'
     ],
     function(
         $,
         Ajax,
         Notification,
-        Str
+        Str,
+        log
     ) {
 
     var SELECTORS = {
         SELECTED_TARIFF: '[name="novalnet_tariff_id"]',
-        FORM_PAYMENTS : ['CREDITCARD', 'DIRECT_DEBIT_SEPA', 'INVOICE', 'PREPAYMENT', 'CASHPAYMENT',
+        FORM_PAYMENTS: ['CREDITCARD', 'DIRECT_DEBIT_SEPA', 'INVOICE', 'PREPAYMENT', 'CASHPAYMENT',
             'GOOGLEPAY', 'APPLEPAY', 'PAYPAL', 'GUARANTEED_DIRECT_DEBIT_SEPA', 'GUARANTEED_INVOICE',
             'INSTALMENT_INVOICE', 'INSTALMENT_DIRECT_DEBIT_SEPA']
     };
@@ -38,7 +40,7 @@ define(
      */
     var init = function(formId) {
         var form = $('#' + formId);
-        var selectedTariff   = form.find(SELECTORS.SELECTED_TARIFF).val();
+        var selectedTariff = form.find(SELECTORS.SELECTED_TARIFF).val();
 
         if (selectedTariff) {
             $('[name="novalnet_selected_tariff"]').val(selectedTariff);
@@ -50,10 +52,10 @@ define(
             $(headerId).hide();
         });
 
-        if ( $('[name="novalnet_public_key"]').length && $('[name="novalnet_key_password"]').length ) {
+        if ($('[name="novalnet_public_key"]').length && $('[name="novalnet_key_password"]').length) {
             $('#novalnet_tariff_id').prop('readonly', true);
-            if ( '' !== $.trim($('[name="novalnet_public_key"]').val()) &&
-                 '' !== $.trim($('[name="novalnet_key_password"]').val()) ) {
+            if ('' !== $.trim($('[name="novalnet_public_key"]').val()) &&
+                 '' !== $.trim($('[name="novalnet_key_password"]').val())) {
                 fillNovalnetDetails();
             } else {
                 nullBasicParams();
@@ -61,10 +63,10 @@ define(
             $( '[name="novalnet_public_key"], [name="novalnet_key_password"]' ).on(
                 'input change',
                 function(e) {
-                    if ( '' !== $.trim($('[name="novalnet_public_key"]').val()) &&
-                         '' !== $.trim($('[name="novalnet_key_password"]').val()) ) {
-                        if ( 'input' === e.type ) {
-                            if (e.originalEvent.inputType != undefined && 'insertFromPaste' === e.originalEvent.inputType ) {
+                    if ('' !== $.trim($('[name="novalnet_public_key"]').val()) &&
+                         '' !== $.trim($('[name="novalnet_key_password"]').val())) {
+                        if ('input' === e.type) {
+                            if (e.originalEvent.inputType != undefined && 'insertFromPaste' === e.originalEvent.inputType) {
                                 fillNovalnetDetails();
                             }
                         } else {
@@ -82,17 +84,14 @@ define(
         $('[name="webhook_configure"]').on(
             'click',
             function() {
-                if ( undefined === $('[name="novalnet_webhook_url"]') || '' === $('[name="novalnet_webhook_url"]').val() ) {
-                    var webhook_url_error = Str.get_string('novalnet_webhook_url_error', 'paygw_novalnet');
-                    Notification.alert('Error', webhook_url_error);
-                    return false;
-                }
-                var webhook_url = $.trim( $('[name="novalnet_webhook_url"]').val() );
-                var regex       = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+                let webhookUrlError = Str.get_string('novalnet_webhook_url_error', 'paygw_novalnet');
+                let webhookUrlElement = $('[name="novalnet_webhook_url"]');
+                let webhookUrl = $.trim(webhookUrlElement.val());
+                // Validate the URL: Check for missing/empty URL or invalid format
+                const regex = /^(http|https):\/\/(\w+(:\w*)?@)?(\S+)(:\d+)?(\/[\w#!:.?+=&%!\-\/]*)?$/;
 
-                if ( ! regex .test( webhook_url )) {
-                    var webhook_url_error = Str.get_string('novalnet_webhook_url_error', 'paygw_novalnet');
-                    Notification.alert('Error', webhook_url_error);
+                if (!webhookUrlElement.length || !webhookUrl || !regex.test(webhookUrl)) {
+                    Notification.alert('Error', webhookUrlError);
                     return false;
                 }
 
@@ -108,7 +107,7 @@ define(
                         strings[2], // Confirm.
                         strings[3], // Cancel.
                         function() {
-                            handleWebhookConfigure(webhook_url);
+                            handleWebhookConfigure(webhookUrl);
                         }
                     );
                 }).fail(Notification.exception);
@@ -130,9 +129,9 @@ define(
 
     var fillNovalnetTariffDetails = function(tariff) {
         var tariffElement = $('[name="novalnet_tariff_id"]');
-        var saved_tariff = $('[name="novalnet_selected_tariff"]').val();
+        var savedTariff = $('[name="novalnet_selected_tariff"]').val();
 
-        if ( 'text' == tariffElement.prop( 'type' ) ) {
+        if ('text' == tariffElement.prop( 'type' )) {
             tariffElement.replaceWith(
                 '<select class="form-select" name="novalnet_tariff_id" id="id_novalnet_tariff_id"></select>'
             );
@@ -140,34 +139,34 @@ define(
 
         tariffElement.empty();
 
-        for ( var tariff_id in tariff ) {
-            var tariff_type  = tariff[tariff_id].type;
-            var tariff_value = tariff[tariff_id].name;
+        for ( var tariffId in tariff ) {
+            var tariffType = tariff[tariffId].type;
+            var tariffValue = tariff[tariffId].name;
             tariffElement.append(
                 $(
                     '<option>',
                     {
-                        value: $.trim( tariff_id ),
-                        text : $.trim( tariff_value )
+                        value: $.trim(tariffId),
+                        text: $.trim(tariffValue)
                     }
-                ).attr( "tariff_type", $.trim( tariff_type ) )
+                ).attr( "tariff_type", $.trim(tariffType) )
             );
 
             /** Assign tariff id. */
-            if (saved_tariff === $.trim( tariff_id ) ) {
-                tariffElement.val( $.trim( tariff_id ) );
-                $('[name="novalnet_tariff_type"]' ).val( $.trim( tariff_type ) );
+            if (savedTariff === $.trim(tariffId)) {
+                tariffElement.val( $.trim(tariffId) );
+                $('[name="novalnet_tariff_type"]' ).val( $.trim(tariffType) );
             }
         }
     };
 
-    var fillNovalnetPaymentDetails = function(payment_types) {
+    var fillNovalnetPaymentDetails = function(paymentTypes) {
         var paymentElement = $('[name="novalnet_active_payments[]"]');
         var testPaymentElement = $('[name="novalnet_test_mode_payments[]"]');
         var novalnetPayments = ['ALIPAY', 'APPLEPAY', 'BANCONTACT', 'BLIK', 'CASHPAYMENT', 'CASH_ON_DELIVERY', 'CREDITCARD',
                                 'DIRECT_DEBIT_ACH', 'DIRECT_DEBIT_SEPA', 'EPS', 'GIROPAY', 'GOOGLEPAY',
                                 'GUARANTEED_DIRECT_DEBIT_SEPA', 'GUARANTEED_INVOICE', 'IDEAL', 'INSTALMENT_DIRECT_DEBIT_SEPA',
-                                'IDEAL', 'INSTALMENT_INVOICE', 'INVOICE', 'PREPAYMENT','MBWAY', 'MULTIBANCO',
+                                'IDEAL', 'INSTALMENT_INVOICE', 'INVOICE', 'PREPAYMENT', 'MBWAY', 'MULTIBANCO',
                                 'ONLINE_BANK_TRANSFER', 'ONLINE_TRANSFER', 'PAYCONIQ', 'PAYPAL', 'POSTFINANCE',
                                 'POSTFINANCE_CARD', 'PRZELEWY24', 'TRUSTLY', 'TWINT', 'WECHATPAY'];
         var savedPayments = $('[name="novalnet_selected_payments"]').val();
@@ -177,7 +176,7 @@ define(
 
         paymentElement.empty(); // Remove all existing options
         testPaymentElement.empty(); // Remove all existing options
-        payment_types.forEach(function(novalnetPayment) {
+        paymentTypes.forEach(function(novalnetPayment) {
 
             if ($.inArray(novalnetPayment, novalnetPayments) === -1) {
                 return; // Skip if payment type is not in the allowed list
@@ -231,6 +230,10 @@ define(
                 // Set the option as selected if it's in the savedPayments list
                 selectOptionIfInList(paymentElement, novalnetPayment, savedPayments);
                 selectOptionIfInList(testPaymentElement, novalnetPayment, savedTestPayments);
+            }).catch(function(error) {
+                log.error("Error loading strings:");
+                log.error(error);
+                return;
             });
 
             // Display settings relevant to the active payment methods only
@@ -241,32 +244,42 @@ define(
         });
     };
 
-    var handleWebhookConfigure = function(webhook_url) {
+    var handleWebhookConfigure = function(webhookUrl) {
         const request = {
             methodname: 'paygw_novalnet_handle_webhook_configure',
             args: {
                 novalnetApiKey: $.trim($('[name="novalnet_public_key"]').val()),
                 novalnetKeyPassword: $.trim($('[name="novalnet_key_password"]').val()),
-                novalnetWebhookUrl: webhook_url
+                novalnetWebhookUrl: webhookUrl
             },
         };
 
         Ajax.call([request])[0].then(response => {
-            var response = JSON.parse(response.response);
-                if ( '' !== response.result.status && 'SUCCESS' == response.result.status && 100 == response.result.status_code ) {
-                    var message = Str.get_string('novalnet_webhook_configure_success', 'paygw_novalnet');
-                    var type = 'success';
-                } else {
-                    var message = response.result.status_text;
-                    var type = 'error';
-                }
+            var parsedResponse = JSON.parse(response.response);
 
-                Notification.addNotification({
-                    message: message,
-                    type: type
-                });
+            let message, type;
+            if (parsedResponse.result.status !== '' && parsedResponse.result.status === 'SUCCESS' &&
+                parsedResponse.result.status_code === 100) {
+                message = Str.get_string('novalnet_webhook_configure_success', 'paygw_novalnet');
+                type = 'success';
+            } else {
+                message = parsedResponse.result.status_text;
+                type = 'error';
+            }
 
-                return;
+            Notification.addNotification({
+                message: message,
+                type: type
+            });
+
+            return Promise.resolve();  // Return a resolved promise to satisfy the catch-or-return rule
+        }).catch(error => {
+            // Handle any errors that occur during the promise chain
+            log.error('Error:', error);
+            Notification.addNotification({
+                message: 'An error occurred while processing the request.',
+                type: 'error'
+            });
         });
     };
 
@@ -276,7 +289,7 @@ define(
             args: {
                 novalnetApiKey: $.trim($('[name="novalnet_public_key"]').val()),
                 novalnetKeyPassword: $.trim($('[name="novalnet_key_password"]').val()),
-                id : $.trim($('[name="id"]').val()),
+                id: $.trim($('[name="id"]').val()),
                 accountid: $.trim($('[name="accountid"]').val()),
                 gateway: $.trim($('[name="gateway"]').val()),
             },
@@ -284,7 +297,7 @@ define(
 
         Ajax.call([request])[0].then(response => {
             var response = JSON.parse(response.response);
-                if ( '' !== response.result.status && 'SUCCESS' == response.result.status && 100 == response.result.status_code ) {
+                if ('' !== response.result.status && 'SUCCESS' == response.result.status && 100 == response.result.status_code) {
                     fillNovalnetTariffDetails(response.merchant.tariff);
                     fillNovalnetPaymentDetails(response.merchant.payment_types);
                 } else {

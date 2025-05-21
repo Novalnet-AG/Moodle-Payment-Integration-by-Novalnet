@@ -28,28 +28,21 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-use core_payment\helper;
 use paygw_novalnet\novalnet_helper;
-use core\output\notification;
-
 require('../../../config.php');
-
 require_login();
 
 $tid   = required_param('tid', PARAM_TEXT);
-
 $PAGE->set_url('/payment/gateway/novalnet/novalnet_comments.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('novalnet_trans_comments', 'paygw_novalnet'));
 $PAGE->set_heading(get_string('novalnet_trans_comments', 'paygw_novalnet'));
 
 global $OUTPUT;
-
 $novalnethelper = new novalnet_helper();
 echo $OUTPUT->header();
 

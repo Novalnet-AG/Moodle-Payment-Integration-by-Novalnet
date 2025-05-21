@@ -30,9 +30,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 declare(strict_types=1);
@@ -55,9 +55,9 @@ require_once($CFG->libdir . '/externallib.php');
  *
  * @package     paygw_novalnet
  *
- * @copyright   2021 Ing. R.J. van Dongen
- * @author      Ing. R.J. van Dongen <rogier@sebsoft.nl>
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class get_payment_details extends external_api {
 

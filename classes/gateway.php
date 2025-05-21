@@ -30,9 +30,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 namespace paygw_novalnet;
@@ -40,17 +40,12 @@ namespace paygw_novalnet;
 /**
  * The gateway class for Novalnet payment gateway.
  *
- * @copyright  2019 Shamim Rezaie <shamim@moodle.com>
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class gateway extends \core_payment\gateway {
 
     /**
      * This function retrieves the list of supported currencies for the payment gateway
-     * and allowing the gateway configuration to specify which
-     * currencies are supported.
-     *
-     * @param \core_payment\form\account_gateway $form The payment gateway configuration form
+     * and allows the gateway configuration to specify which currencies are supported.
      *
      * @return array An array of supported currencies
      */
@@ -367,14 +362,14 @@ class gateway extends \core_payment\gateway {
      * any validation issues that are encountered.
      *
      * @param \core_payment\form\account_gateway $form The form object that holds the form's data and structure.
-     * @param \stdClass $data The form data submitted by the user, containing all the input values.
+     * @param \stdClass $data The form data submitted by the user.
      * @param array $files The files uploaded through the form, if any.
-     * @param array &$errors An array of validation errors that will be populated if any issues are found.
+     * @param array &$errors Reference to the array of validation errors to populate.
      *
      * @return void
      */
     public static function validate_gateway_form(\core_payment\form\account_gateway $form,
-                                                 \stdClass $data, array $files, array &$errors): void {
+        \stdClass $data, array $files, array &$errors): void {
         if ($data->enabled && ( empty( $data->novalnet_public_key ) || empty( $data->novalnet_key_password ) ) ) {
             $errors['enabled'] = get_string('gatewaycannotbeenabled', 'payment');
             $errorsmsg = get_string('novalnet_required_error', 'paygw_novalnet');

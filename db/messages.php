@@ -28,15 +28,15 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $messageproviders = [
-    'payment_successful' => [
+    'payment_success' => [
         'defaults' => [
             'popup' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
             'email' => MESSAGE_PERMITTED + MESSAGE_DEFAULT_ENABLED,
