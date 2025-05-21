@@ -28,9 +28,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 define('NO_MOODLE_COOKIES', true);
@@ -68,7 +68,7 @@ class novalnet_webhook {
      * Helper array contain various helper methods or configuration
      * values for processing payments with Novalnet.
      *
-     * @var array
+     * @var object
      */
     private $novalnethelper;
 
@@ -128,9 +128,9 @@ class novalnet_webhook {
     /**
      * Order reference values.
      *
-     * @var array
+     * @var object
      */
-    private $orderreference = [];
+    private $orderreference;
 
     /**
      * Payment reference values.
@@ -240,7 +240,8 @@ class novalnet_webhook {
                     if (empty( $this->orderreference )) {
                         $this->handle_communication_failure();
                     } else {
-                        $this->display_message( [ 'message' => 'Novalnet Callback executed. The Transaction ID already existed' ] );
+                        $this->display_message( [ 'message' => get_string(
+                            'novalnet_callback_tid_existed', 'paygw_novalnet') ] );
                     }
                     break;
                 case 'TRANSACTION_CAPTURE':
@@ -283,7 +284,7 @@ class novalnet_webhook {
                     break;
                 default:
                     $this->display_message(
-                        [ 'message' => "The webhook notification has been received for the unhandled EVENT type($this->eventtype)" ]
+                        [ 'message' => get_string( 'novalnet_callback_unhandled_event', 'paygw_novalnet', $this->eventtype) ]
                     );
             }
 
@@ -301,13 +302,12 @@ class novalnet_webhook {
                 );
                 $this->display_message( $this->response['message'] );
             } else {
-                $this->display_message( ['message' => 'Novalnet callback received. Callback Script executed already.'] );
+                $this->display_message( ['message' => get_string( 'novalnet_callback_script_executed', 'paygw_novalnet')] );
             }
         } else if ($this->eventdata['transaction']['payment_type'] != 'ONLINE_TRANSFER_CREDIT') {
-            $message = ! ( $this->novalnethelper->is_success_status( $this->eventdata ) ) ?
-                'Novalnet callback received. Status is not valid.' :
-                'Novalnet callback received. Callback Script executed already.';
-            $this->display_message( [ 'message' => $message ] );
+            $msgtxt = ! ( $this->novalnethelper->is_success_status( $this->eventdata ) ) ? 'novalnet_callback_status_invalid' :
+                'novalnet_callback_script_executed';
+            $this->display_message( [ 'message' => get_string( $msgtxt, 'paygw_novalnet') ] );
         }
     }
 
@@ -322,10 +322,11 @@ class novalnet_webhook {
             $requestdata     = $this->novalnethelper->novalnet_unserialize_data($jsoninput);
 
             if (empty( $requestdata ) || ! is_array( $requestdata )) {
-                $this->display_message( ['message' => 'A necessary parameter is missing from the request.'] );
+                $this->display_message( ['message' => get_string( 'novalnet_callback_missing_necessary_parameter',
+                    'paygw_novalnet')] );
             }
         } catch ( Exception $e ) {
-            $this->display_message( ['message' => "Received data is not in the JSON format $e"] );
+            $this->display_message( ['message' => get_string('novalnet_callback_not_json_format', 'paygw_novalnet')] );
         }
 
         return $requestdata;
@@ -410,13 +411,15 @@ class novalnet_webhook {
             $requestreceivedip = $this->get_ip_address( $novalnethostip );
             if (! empty( $novalnethostip ) && ! empty( $requestreceivedip )) {
                 if ($novalnethostip !== $requestreceivedip && empty( $this->config['novalnet_callback_test_mode'] )) {
-                    $this->display_message( ['message' => "Unauthorised access from the IP $requestreceivedip"] );
+                    $this->display_message( ['message' => get_string( 'novalnet_callback_unauthorised_ip',
+                        'paygw_novalnet', $requestreceivedip)] );
                 }
             } else {
-                $this->display_message( ['message' => 'Unauthorised access from the IP. Host/recieved IP is empty'] );
+                $this->display_message( ['message' => get_string( 'novalnet_callback_host_recieved_ip_empty',
+                    'paygw_novalnet')] );
             }
         } else {
-            $this->display_message( ['message' => 'Unauthorised access from the IP. Novalnet Host name is empty'] );
+            $this->display_message( ['message' => get_string( 'novalnet_callback_host_empty', 'paygw_novalnet')] );
         }
 
         $this->validate_event_data();
@@ -432,17 +435,19 @@ class novalnet_webhook {
         foreach ($this->mandatory as $category => $parameters) {
             if (empty( $this->eventdata[$category] )) {
                 // Could be a possible manipulation in the notification data.
-                $this->display_message( ['message' => "Required parameter category($category) not received"] );
+                $this->display_message( ['message' => get_string( 'novalnet_callback_missing_category',
+                    'paygw_novalnet', $category)] );
             } else if (! empty( $parameters )) {
                 foreach ($parameters as $parameter) {
                     if (empty( $this->eventdata[$category][$parameter] )) {
                         // Could be a possible manipulation in the notification data.
-                        $this->display_message(
-                            ['message' => "Required parameter($parameter) in the category($category) not received"] );
+                        $this->display_message(['message' => get_string( 'novalnet_callback_missing_parameter_category',
+                            'paygw_novalnet', ['parameter' => $parameter, 'category' => $category])]);
                     } else if (in_array( $parameter, ['tid', 'parent_tid'], true ) &&
                         ! preg_match( '/^\d{17}$/', $this->eventdata[$category][$parameter] )) {
                         $this->display_message(
-                            ['message' => "Invalid TID received in the category($category) not received $parameter"] );
+                            ['message' => get_string( 'novalnet_callback_missing_tid_category',
+                                'paygw_novalnet', ['category' => $category, 'parameter' => $parameter])] );
                     }
                 }
             }
@@ -470,11 +475,13 @@ class novalnet_webhook {
         $generatedchecksum = hash( 'sha256', $tokenstring );
 
         if ($generatedchecksum !== $this->eventdata['event']['checksum']) {
-            $this->display_message( ['message' => 'While notifying some data has been changed. The hash check failed'] );
+            $this->display_message( ['message' => get_string( 'novalnet_callback_hash_check_failed',
+                'paygw_novalnet')] );
         }
 
         if (! empty( $this->eventdata['custom']['shop_invoked'] )) {
-            $this->display_message( ['message' => 'Process already handled in the shop.'] );
+            $this->display_message( ['message' => get_string( 'novalnet_callback_already_handled_shop',
+                'paygw_novalnet')] );
         }
     }
 
@@ -526,7 +533,8 @@ class novalnet_webhook {
 
         // Order id check.
         if (! empty( $this->orderreference ) && ! empty( $this->orderid ) && $this->orderreference->orderid !== $this->orderid) {
-            $this->display_message( ['message' => 'Order reference not matching.'] );
+            $this->display_message( ['message' => get_string( 'novalnet_callback_reference_not_matching',
+                'paygw_novalnet')] );
         }
 
         if (empty( $this->orderreference )) {
@@ -541,7 +549,8 @@ class novalnet_webhook {
             } else if ('PAYMENT' === $this->eventdata['event']['type']) {
                 $this->handle_communication_failure();
             } else {
-                $this->display_message( ['message' => 'Order reference not found in the shop'] );
+                $this->display_message( ['message' => get_string( 'novalnet_callback_reference_not_found_shop',
+                    'paygw_novalnet')] );
             }
         }
     }
@@ -553,7 +562,8 @@ class novalnet_webhook {
      */
     private function handle_communication_failure() {
         if ( empty($this->paymentreference )) {
-            $this->display_message( ['message' => 'Reference is empty, so not able to map the order'] );
+            $this->display_message( ['message' => get_string( 'novalnet_callback_reference_empty',
+                'paygw_novalnet')] );
         }
 
         try {
@@ -742,7 +752,7 @@ class novalnet_webhook {
             'GOOGLEPAY_REPRESENTMENT', 'APPLEPAY_REPRESENTMENT', 'DEBT_COLLECTION_DE', 'CREDIT_ENTRY_DE'])) {
             $this->response['message'] = $comments;
         } else {
-            $this->response['message'] = 'Novalnet webhook received. Order Already Paid';
+            $this->response['message'] = get_string( 'novalnet_callback_already_paid', 'paygw_novalnet');
         }
     }
 

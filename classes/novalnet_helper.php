@@ -30,11 +30,10 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace paygw_novalnet;
 
 use curl;
@@ -414,8 +413,8 @@ class novalnet_helper {
     /**
      * Save payment details with customer and course details.
      *
-     * @param transaction details $transaction
-     * @param update parameters $paymentrecord
+     * @param array $transaction Transaction details.
+     * @param array $paymentrecord Update parameters.
      * @return void
      */
     private function save_transaction_details($transaction, $paymentrecord) {
@@ -605,11 +604,11 @@ class novalnet_helper {
     }
 
     /**
-     * Update payment method if transactions id given
+     * Update payment method if transaction id is given.
      *
-     * @param  $orderupdate   The order details.
+     * @param  Order $orderupdate The order details.
      *
-     * @return array
+     * @return object An updated array containing the order and transaction information.
      */
     public function handle_order_id_update($orderupdate) {
         $endpoint = $this->get_action_endpoint( 'transaction_update' );
@@ -648,10 +647,10 @@ class novalnet_helper {
     /**
      * Get localised string of a cost
      *
-     * @param float $cost
-     * @param string $currency
+     * @param float|null $cost The cost value (nullable)
+     * @param string|null $currency The currency code (nullable)
      *
-     * @return string
+     * @return string|null The formatted cost string (nullable)
      */
     public function novalnet_shop_amount_format(?float $cost = null, ?string $currency = null): ?string {
         if ( empty( $cost ) && empty( $currency ) ) {
@@ -721,9 +720,8 @@ class novalnet_helper {
     }
 
     /**
-     * Create Customer data for a specific user.
+     * Create Customer data for the current user.
      *
-     * @param \stdClass $user
      * @return array Customer information
      */
     public function get_customer_data() {
@@ -774,7 +772,8 @@ class novalnet_helper {
     /**
      * Retrieves the amount associated with a course.
      *
-     * @param array $params Associative array containing course details
+     * @param array $params Associative array containing course details.
+     * @param bool $formattedamount Optional. Whether to format the amount. Defaults to false.
      *
      * @return float|int Returns the course amount, typically as a float or integer.
      */
@@ -873,8 +872,7 @@ class novalnet_helper {
     /**
      * Create custom data.
      *
-     *
-     * @param \stdClass $inputvars The input data, typically a user object or similar structure.
+     * @param array $input The input data, contains a course information.
      * @return array The custom data
      */
     public function get_custom_data($input = []) {
@@ -904,12 +902,12 @@ class novalnet_helper {
     /**
      * Create the installment data based on the configuration.
      *
-     * @param \stdClass $payment The payment object containing payment-related information.
-     * @param \stdClass $config Configuration data related to installment settings.
+     * @param string    $payment A string containing payment-related information.
+     * @param \stdClass $config  Configuration data related to installment settings.
      *
-     * @return Customer Returns an instance of the Customer class with the installment data.
+     * @return array Returns an instance of the installment data.
      */
-    public function get_instalment_data($payment, $config) {
+    public function get_instalment_data(string $payment, $config) {
         $config      = (array) $config;
         $selectedcycles = array_values($config['novalnet_' . strtolower($payment) . '_total_period']);
 
@@ -1095,11 +1093,11 @@ class novalnet_helper {
     }
 
     /**
-     * Get Store instalment data.
+     * Get stored instalment data.
      *
-     * @param array $instalment.
+     * @param array $instalment The instalment data to retrieve.
      *
-     * @return array
+     * @return array The stored instalment data.
      */
     public function get_stored_instalment_data($instalment) {
 
@@ -1540,7 +1538,10 @@ class novalnet_helper {
      * Synchronizes the payment status between the transaction and the payment record.
      *
      * @param object $transaction The transaction object that needs to be updated.
-     * @param object $paymentrecord The payment record containing the payment status.
+     * @param object|null $paymentrecord The payment record containing the payment informaion.
+     * @param string|null $comments Optional transaction comments.
+     * @param string|null $errormessage Optional error message if there was an issue during synchronization.
+     * @param bool $iswebhook Indicates whether the synchronization is triggered by a webhook (default is false).
      *
      * @return null|Transaction Returns null if no changes were made. Returns the
      * updated transaction object if the payment status was synchronized successfully.

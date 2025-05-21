@@ -30,9 +30,9 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 declare(strict_types=1);
@@ -71,11 +71,14 @@ class get_merchant_details extends external_api {
      * Executes the payment configuration process with Novalnet API.
      *
      * This method performs the necessary configuration for payment processing
-     * using the provided Novalnet API key and key password. It returns an array
-     * containing the result of the payment configuration process.
+     * using the provided Novalnet API credentials and related parameters. It returns
+     * an array containing the result of the payment configuration process.
      *
-     * @param string $novalnetapikey The API key used to authenticate with Novalnet's services.
+     * @param string $novalnetapikey      The API key used to authenticate with Novalnet's services.
      * @param string $novalnetkeypassword The password associated with the Novalnet API key for secure communication.
+     * @param string $id                  The account ID identifier.
+     * @param string $accountid           The Novalnet account ID to be configured.
+     * @param string $gatewayname         The name of the payment gateway.
      *
      * @return array Returns an array containing the success status and any relevant information or error messages.
      */
@@ -89,8 +92,15 @@ class get_merchant_details extends external_api {
             'gateway' => $gatewayname,
         ]);
 
-        $novalnethelper = new novalnet_helper();
+        // Validate context.
+        $context = \context_system::instance();
 
+        self::validate_context($context);
+
+        // Check capability if needed (e.g., only admins or managers).
+        require_capability('moodle/site:config', $context);
+
+        $novalnethelper = new novalnet_helper();
         $request = [
             'merchant' => [
                 'signature' => $novalnetapikey,

@@ -28,13 +28,13 @@
  *
  * If you wish to customize Novalnet payment extension for your needs, please contact technic@novalnet.de for more information.
  *
- * @package paygw_novalnet
- * @copyright Copyright (c) Novalnet
- * @license https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    paygw_novalnet
+ * @copyright  2025 Novalnet <technic@novalnet.de>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $string['gatewaydescription'] = 'Das Novalnet Gateway ist eine End-to-End-Lösung für die Full-Service-Verarbeitung von internationalen und lokalen Zahlungen auf der ganzen Welt. Durch die Anbindung an die Novalnet-Plattform stellt es ein Höchstmaß an Sicherheit für Ihre Transaktionen dar.';
-$string['gatewayname'] = 'Novalnet Payments (100+ Zahlungsarten weltweit)';
+$string['gatewayname'] = 'Novalnet Payments (150+ Zahlungsmethoden weltweit)';
 $string['internalerror'] = 'Es ist ein interner Fehler aufgetreten. Bitte kontaktieren Sie uns.';
 $string['pluginname'] = 'Novalnet';
 $string['api_config_heading'] = 'Novalnet API-Konfiguration';
@@ -249,3 +249,34 @@ $string['novalnet_callback_instalment_prepaid_message'] = 'Für die Transaktions
 $string['novalnet_callback_instalment_stopped_message'] = 'Die Ratenzahlung für die TID wurde gestoppt: {$a->ptid} um {$a->date}.';
 $string['novalnet_callback_instalment_refund_message'] = 'Die Rückerstattung mit dem Betrag {$a} wurde veranlasst.';
 $string['novalnet_callback_instalment_cancelled_message'] = 'Die Ratenzahlung für die TID wurde gekündigt: {$a->ptid} am {$a->date}.';
+$string['novalnet_callback_already_paid'] = 'Novalnet Webhook empfangen. Bestellung bereits bezahlt.';
+$string['novalnet_callback_tid_existed'] = 'Novalnet Callback ausgeführt. Die Transaktions-ID existierte bereits.';
+$string['novalnet_callback_unhandled_event'] = 'Die Webhook-Benachrichtigung wurde für den unbehandelten EVENT-Typ ($a) empfangen.';
+$string['novalnet_callback_script_executed'] = 'Novalnet-Rückruf erhalten. Callback Script bereits ausgeführt.';
+$string['novalnet_callback_status_invalid'] = 'Novalnet-Rückruf erhalten. Status ist nicht gültig.';
+$string['novalnet_callback_missing_necessary_parameter'] = 'Ein notwendiger Parameter fehlt in der Anfrage.';
+$string['novalnet_callback_not_json_format'] = 'Empfangene Daten sind nicht im JSON-Format $a';
+$string['novalnet_callback_unauthorised_ip'] = 'Unerlaubter Zugriff von der IP $a';
+$string['novalnet_callback_host_recieved_ip_empty'] = 'Unerlaubter Zugriff von der IP. Host/empfangene IP ist leer.';
+$string['novalnet_callback_host_empty'] = 'Unerlaubter Zugriff von der IP. Novalnet Hostname ist leer.';
+$string['novalnet_callback_missing_category'] = 'Erforderlicher Parameter Kategorie($a) nicht erhalten.';
+$string['novalnet_callback_missing_parameter_category'] = 'Erforderlicher Parameter($a->parameter) in der Kategorie($a->category) nicht erhalten.';
+$string['novalnet_callback_missing_tid_category'] = 'Ungültige TID in der Kategorie ($a->category) nicht empfangen $a->parameter';
+$string['novalnet_callback_hash_check_failed'] = 'Bei der Benachrichtigung wurden einige Daten geändert. Die Hash-Prüfung ist fehlgeschlagen.';
+$string['novalnet_callback_already_handled_shop'] = 'Der Vorgang wurde bereits in der Werkstatt bearbeitet.';
+$string['novalnet_callback_reference_not_matching'] = 'Die Bestellnummer stimmt nicht überein.';
+$string['novalnet_callback_reference_not_found_shop'] = 'Bestellnummer nicht im Shop gefunden..';
+$string['novalnet_callback_reference_empty'] = 'Die Referenz ist leer, so dass der Auftrag nicht zugeordnet werden kann.';
+$string['privacy:metadata:paygw_novalnet_transaction_detail'] = 'Speichert Transaktionsdetails im Zusammenhang mit Novalnet-Zahlungen.';
+$string['privacy:metadata:paygw_novalnet_transaction_detail:userid'] = 'Die ID des Benutzers, der mit der Transaktion verbunden ist.';
+$string['privacy:metadata:novalnet'] = 'Gibt die erforderlichen Benutzerdaten für die Zahlungsabwicklung an Novalnet weiter.';
+$string['privacy:metadata:novalnet:first_name'] = 'Vorname des Benutzers, der eine Transaktion anfordert.';
+$string['privacy:metadata:novalnet:last_name'] = 'Der Nachname des Benutzers, der eine Transaktion anfordert.';
+$string['privacy:metadata:novalnet:email'] = 'E-Mail des Benutzers, der eine Transaktion beantragt.';
+$string['privacy:metadata:novalnet:customer_ip'] = 'Die IP-Adresse des Benutzers, die an Novalnet gesendet wurde.';
+$string['privacy:metadata:novalnet:customer_no'] = 'Die Benutzer-ID, die sich auf die an Novalnet gesendete Transaktion bezieht.';
+$string['privacy:metadata:novalnet:tel'] = 'Die an Novalnet gesendete Telefonnummer des Benutzers.';
+$string['privacy:metadata:novalnet:mobile'] = 'Die an Novalnet gesendete Handynummer des Benutzers.';
+$string['privacy:metadata:novalnet:gender'] = 'Das Geschlecht des an Novalnet gesendeten Benutzers.';
+$string['privacy:metadata:novalnet:birth_date'] = 'Das Geburtsdatum des Benutzers, das an Novalnet gesendet wird.';
+$string['privacy:metadata:novalnet:billing'] = 'Die an Novalnet gesendeten Rechnungsdaten des Nutzers (einschließlich Firmenname, Adresse und andere Details).';
