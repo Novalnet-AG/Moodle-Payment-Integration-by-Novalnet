@@ -16,7 +16,7 @@
     background-color: #ddd;
     border: 1px solid #080;
 }
-.method-desc {
+.paygw_novalnet-method-desc {
     display: none;
 }
 .paygw_novalnet-payment-methods .paymentmethod input[type="radio"]:checked + label p {
