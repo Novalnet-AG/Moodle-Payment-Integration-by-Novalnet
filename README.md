@@ -3,7 +3,7 @@
 The Moodle Payment Gateway by Novalnet enables secure integration of payments and payment services for all Moodle shops through a full-service platform that allows merchants to automate payment processing, enrich customer experiences, and improve conversion rates via a single interface and contract partner. It supports over 100 payment methods in more than 125 currencies globally, offering a highly secure, state-of-the-art environment backed by AI-powered risk management tailored for SMEs and large enterprises. Additionally, Novalnet provides multiple value-added features and services, including recurring payments, debt collection, and automated marketplace solutions.
 
 ## Integration requirements for Moodle
-Novalnet <a href="https://www.novalnet.de/"> merchant account </a> is required for processing all international and local payments through this Moodle Payment Gateway. The module is available for the Moodle versions 4.2.0 - 5.+ in the following languages: EN & DE
+Novalnet <a href="https://www.novalnet.de/"> merchant account </a> is required for processing all international and local payments through this Moodle Payment Gateway. The module is available for the Moodle versions 4.5.0 - 5.+ in the following languages: EN & DE
 
 ## Important functions for Moodle
 
